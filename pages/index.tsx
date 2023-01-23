@@ -13,9 +13,9 @@ export default function Home() {
   const predictionsRef = useRef<handPoseDetection.Hand[]>([]);
   const [ready, setReady] = useState(false);
   const lostCountRef = useRef(0);
-  const recordPauseRef = useRef<boolean>(true);
+  // const recordPauseRef = useRef<boolean>(true);
   const [capturePause, setCapturePause] = useState<boolean>(false);
-  const recordedFlamesRef = useRef<Frame[]>([]);
+  // const recordedFlamesRef = useRef<Frame[]>([]);
 
   useEffect(() => {
     const loadTensorFlow = async () => {
@@ -58,6 +58,7 @@ export default function Home() {
                   recordedFlamesRef={recordedFlamesRef}
                 />
               </Canvas> */}
+              <p style={{ color: "red", position: "absolute" }}>REC</p>
               <ConvexEnvelopeTips
                 webcam={webcamRef.current as Webcam}
                 model={modelRef.current as handPoseDetection.HandDetector}

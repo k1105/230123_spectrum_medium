@@ -156,6 +156,31 @@ export const ConvexEnvelopeTips = ({
     }
 
     if (predictionsRef.current.length > 0) {
+      p5.push();
+      p5.strokeWeight(10);
+      p5.translate(p5.width - 200, p5.height / 2);
+      for (let i = 0; i < 5; i++) {
+        p5.line(
+          correctedPoses.current[0][0].x * 800,
+          correctedPoses.current[0][0].y * 800,
+          correctedPoses.current[0][4 * i + 1].x * 800,
+          correctedPoses.current[0][4 * i + 1].y * 800
+        );
+        for (let j = 1; j < 4; j++) {
+          p5.line(
+            correctedPoses.current[0][4 * i + j].x * 800,
+            correctedPoses.current[0][4 * i + j].y * 800,
+            correctedPoses.current[0][4 * i + j + 1].x * 800,
+            correctedPoses.current[0][4 * i + j + 1].y * 800
+          );
+        }
+      }
+      p5.translate(0, 100);
+      p5.textAlign(p5.CENTER);
+      p5.noStroke();
+      p5.text(predictionsRef.current[0].handedness, 0, 0);
+      p5.pop();
+
       current_handpose = [
         correctedPoses.current[0][4],
         correctedPoses.current[0][8],
@@ -197,23 +222,6 @@ export const ConvexEnvelopeTips = ({
         );
       }
       p5.endShape();
-
-      //   for (let i = 0; i < 5; i++) {
-      //     p5.line(
-      //       current_handpose[0].x * 2000 + p5.width / 2,
-      //       current_handpose[0].y * 2000 + p5.height / 2,
-      //       current_handpose[4 * i + 1].x * 2000 + p5.width / 2,
-      //       current_handpose[4 * i + 1].y * 2000 + p5.height / 2
-      //     );
-      //     for (let j = 1; j < 4; j++) {
-      //       p5.line(
-      //         current_handpose[4 * i + j].x * 2000 + p5.width / 2,
-      //         current_handpose[4 * i + j].y * 2000 + p5.height / 2,
-      //         current_handpose[4 * i + j + 1].x * 2000 + p5.width / 2,
-      //         current_handpose[4 * i + j + 1].y * 2000 + p5.height / 2
-      //       );
-      //     }
-      //   }
     }
     p5.pop();
   };
