@@ -3,15 +3,9 @@ import "@tensorflow/tfjs";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import Webcam from "react-webcam";
 import Hands from "../components/Hands";
-import { Canvas } from "@react-three/fiber";
-import Controller from "../components/Controller";
-
-type Frame = {
-  keypoints: number[];
-  keypoints3D: (number | undefined)[];
-  handedness: "Right" | "Left";
-  score: number;
-};
+import { SketchComponent } from "../components/SketchComponent";
+import { ConvexEnvelopeHands } from "../components/ConvexEnvelopeHands";
+import { ConvexEnvelopeTips } from "../components/ConvexEnvelopeTips";
 
 export default function Home() {
   const webcamRef = useRef<Webcam>(null);
@@ -45,15 +39,15 @@ export default function Home() {
     <>
       <main>
         <div id="root">
-          <Controller
+          {/* <Controller
             recordPauseRef={recordPauseRef}
             capturePause={capturePause}
             setCapturePause={setCapturePause}
             recordedFlamesRef={recordedFlamesRef}
-          />
+          /> */}
           {ready ? (
             <>
-              <Canvas>
+              {/* <Canvas>
                 <Hands
                   webcam={webcamRef.current as Webcam}
                   model={modelRef.current as handPoseDetection.HandDetector}
@@ -63,7 +57,14 @@ export default function Home() {
                   capturePause={capturePause}
                   recordedFlamesRef={recordedFlamesRef}
                 />
-              </Canvas>
+              </Canvas> */}
+              <ConvexEnvelopeTips
+                webcam={webcamRef.current as Webcam}
+                model={modelRef.current as handPoseDetection.HandDetector}
+                predictionsRef={predictionsRef}
+                lostCountRef={lostCountRef}
+                capturePause={capturePause}
+              />
             </>
           ) : (
             <>loading...</>
