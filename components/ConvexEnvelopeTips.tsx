@@ -87,10 +87,6 @@ export const ConvexEnvelopeTips = ({
    * Sketch
    */
 
-  const preload = (p5: p5Types) => {
-    // 画像などのロードを行う
-  };
-
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
   };
@@ -230,12 +226,5 @@ export const ConvexEnvelopeTips = ({
     p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
   };
 
-  return (
-    <Sketch
-      preload={preload}
-      setup={setup}
-      draw={draw}
-      windowResized={windowResized}
-    />
-  );
+  return <Sketch setup={setup} draw={draw} windowResized={windowResized} />;
 };

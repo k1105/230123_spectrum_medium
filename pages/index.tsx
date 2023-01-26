@@ -2,10 +2,12 @@ import { useRef, useState, useEffect } from "react";
 import "@tensorflow/tfjs";
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import Webcam from "react-webcam";
-import Hands from "../components/Hands";
-import { SketchComponent } from "../components/SketchComponent";
-import { ConvexEnvelopeHands } from "../components/ConvexEnvelopeHands";
-import { ConvexEnvelopeTips } from "../components/ConvexEnvelopeTips";
+// import Hands from "../components/Hands";
+// import { SketchComponent } from "../components/SketchComponent";
+// import { ConvexEnvelopeHands } from "../components/ConvexEnvelopeHands";
+// import { ConvexEnvelopeTips } from "../components/ConvexEnvelopeTips";
+import { TouchAndRedo } from "../components/TouchAndRedo";
+import { MotionControllUI } from "../components/MotionControllUI";
 
 export default function Home() {
   const webcamRef = useRef<Webcam>(null);
@@ -58,8 +60,7 @@ export default function Home() {
                   recordedFlamesRef={recordedFlamesRef}
                 />
               </Canvas> */}
-              <p style={{ color: "red", position: "absolute" }}>REC</p>
-              <ConvexEnvelopeTips
+              <TouchAndRedo
                 webcam={webcamRef.current as Webcam}
                 model={modelRef.current as handPoseDetection.HandDetector}
                 predictionsRef={predictionsRef}
