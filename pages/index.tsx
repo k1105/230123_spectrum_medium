@@ -37,6 +37,18 @@ export default function Home() {
     });
   }, []);
 
+  function doReload() {
+    // reloadメソッドによりページをリロード
+    if (window) window.location.reload();
+  }
+
+  if (typeof window !== "undefined") {
+    window.addEventListener("load", function () {
+      // ページ表示完了した3分後にリロード
+      setTimeout(doReload, 3 * 60 * 1000);
+    });
+  }
+
   return (
     <>
       <main>
