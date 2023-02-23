@@ -1,10 +1,10 @@
-import { MutableRefObject } from "react";
+import { MutableRefObject, RefObject } from "react";
 
 type Props = {
   margin_x: number;
   col: number;
   max_col: number;
-  controllerRefs: MutableRefObject<HTMLDivElement>[];
+  controllerRefs: MutableRefObject<RefObject<HTMLDivElement>[]>;
 };
 
 export const MotionControllUI = ({
@@ -20,7 +20,13 @@ export const MotionControllUI = ({
           const elem = [];
           for (let i = 0; i < max_col; i++) {
             elem.push(
-              <div key={"item_" + i} className="item" ref={controllerRefs[i]}>
+              <div
+                key={i}
+                className="item"
+                ref={
+                  controllerRefs.current[i] as MutableRefObject<HTMLDivElement>
+                }
+              >
                 <a>mute</a>
                 <a>delete</a>
               </div>

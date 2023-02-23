@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useCallback,
   createRef,
+  RefObject,
 } from "react";
 import { PixelInput } from "@tensorflow-models/hand-pose-detection/dist/shared/calculators/interfaces/common_interfaces";
 import Webcam from "react-webcam";
@@ -16,6 +17,7 @@ import { linearInterpolation } from "../lib/linearInterpolation";
 import { drawWholeHand } from "../lib/drawWholeHand";
 import { drawEnvelope } from "../lib/drawEnvelope";
 import { MotionControllUI } from "./MotionControllUI";
+import { RecButton } from "./RecButton";
 
 type Props = {
   webcam: Webcam;
@@ -40,7 +42,7 @@ export const TouchAndRedo = ({
   //** Params
 
   let timestamp: number = 0;
-  const dur: number = 5; //1周期の時間.　単位:
+  const dur: number = 10; //1周期の時間.　単位:
   let iter = 0;
   let loading_fn = [0];
   let ms = 0; //プログラム実行からの経過時間を保持。単位: ms
@@ -54,12 +56,18 @@ export const TouchAndRedo = ({
 
   const margin_x = 300;
   const max_col = 5;
-  const controllerRefs = new Array(max_col).fill(createRef<HTMLDivElement>());
+  const controllerRefs = useRef<RefObject<HTMLDivElement>[]>([]);
+  for (let i = 0; i < max_col; i++) {
+    //@ts-ignore
+    controllerRefs.current[i] = createRef<HTMLDivElement>();
+  }
   const requestRef = useRef<null | number>(null);
   const flames = useRef<
     [handPoseDetection.Keypoint[][], handPoseDetection.Keypoint[][]]
   >([[], []]);
   const correctedPoses = useRef<handPoseDetection.Keypoint[][]>([]);
+
+  const recButtonRef = useRef<HTMLButtonElement>(null);
 
   const capture = useCallback(async () => {
     //webcamとmodelのインスタンスが生成されていたら
@@ -190,9 +198,7 @@ export const TouchAndRedo = ({
     }
 
     const handpose = [...last_handpose, ...current_handpose];
-    console.log(handpose);
     const convex_indices = giftwrap(handpose);
-    console.log(convex_indices);
 
     // draw
     p5.push();
@@ -223,8 +229,11 @@ export const TouchAndRedo = ({
           ((ms % (dur * 1000)) - recordedPoints.current[i][fn].t) / 1000
         );
         const indices = giftwrap(handpose);
-        // controllerRefs[i].current.style.opacity = 1;
-        // controllerRefs[i].current.style.pointerEvents = "default";
+        if (controllerRefs.current[i].current !== undefined) {
+          //@ts-ignore
+          controllerRefs.current[i].current.style.opacity = "1";
+        }
+
         p5.push();
         p5.translate(step_x * i, 0);
         drawEnvelope(p5, indices, handpose, 0.5);
@@ -247,6 +256,7 @@ export const TouchAndRedo = ({
         margin_x={300}
         controllerRefs={controllerRefs}
       />
+      <RecButton recButtonRef={recButtonRef} />
     </>
   );
 };
