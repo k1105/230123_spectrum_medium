@@ -8,6 +8,7 @@ import Webcam from "react-webcam";
 // import { ConvexEnvelopeTips } from "../components/ConvexEnvelopeTips";
 import { TouchAndRedo } from "../components/TouchAndRedo";
 import { MotionControllUI } from "../components/MotionControllUI";
+import Image from "next/image";
 
 export default function Home() {
   const webcamRef = useRef<Webcam>(null);
@@ -72,6 +73,7 @@ export default function Home() {
                   recordedFlamesRef={recordedFlamesRef}
                 />
               </Canvas> */}
+
               <TouchAndRedo
                 webcam={webcamRef.current as Webcam}
                 model={modelRef.current as handPoseDetection.HandDetector}

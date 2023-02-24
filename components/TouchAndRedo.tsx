@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import p5Types from "p5";
 import React, {
   useRef,
@@ -68,6 +69,8 @@ export const TouchAndRedo = ({
   const correctedPoses = useRef<handPoseDetection.Keypoint[][]>([]);
 
   const recButtonRef = useRef<HTMLButtonElement>(null);
+
+  const instructionRef = useRef<HTMLDivElement>(null);
 
   const capture = useCallback(async () => {
     //webcamとmodelのインスタンスが生成されていたら
@@ -182,6 +185,8 @@ export const TouchAndRedo = ({
     p5.pop();
 
     if (predictionsRef.current.length > 0) {
+      //@ts-ignore
+      if (instructionRef.current) instructionRef.current.style.opacity = 0;
       current_handpose = [
         correctedPoses.current[0][4],
         correctedPoses.current[0][8],
@@ -249,6 +254,26 @@ export const TouchAndRedo = ({
 
   return (
     <>
+      <div
+        ref={instructionRef}
+        style={{
+          position: "absolute",
+          width: "100vw",
+          height: "100vh",
+          textAlign: "center",
+        }}
+      >
+        <div style={{ display: "inline-block", marginTop: "30vh" }}>
+          <Image
+            width={300}
+            height={300}
+            src={"/img/player.svg"}
+            alt="player"
+          />
+          <p style={{ color: "white" }}>画面の前に手を出してください。</p>
+        </div>
+      </div>
+
       <Sketch setup={setup} draw={draw} windowResized={windowResized} />
       <MotionControllUI
         col={3}
